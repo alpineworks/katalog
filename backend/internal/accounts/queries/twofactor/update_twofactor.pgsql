@@ -1,4 +1,4 @@
-UPDATE talvi.twofactor
+UPDATE katalog.twofactor
 SET
     (enabled) = ($2)
 WHERE

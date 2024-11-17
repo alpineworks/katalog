@@ -3,7 +3,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TYPE ROLE AS ENUM('admin', 'user');
 
 CREATE TABLE IF NOT EXISTS
-    talvi.accounts (
+    katalog.accounts (
         id UUID PRIMARY KEY NOT NULL DEFAULT gen_random_uuid (),
         created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
         name TEXT NOT NULL,

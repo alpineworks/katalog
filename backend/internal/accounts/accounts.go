@@ -9,12 +9,12 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/alpineworks/katalog/backend/internal/dragonfly"
+	"github.com/alpineworks/katalog/backend/internal/encryption"
+	"github.com/alpineworks/katalog/backend/internal/postgres"
+	"github.com/alpineworks/katalog/backend/internal/util"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
-	"github.com/michaelpeterswa/talvi/backend/internal/cockroach"
-	"github.com/michaelpeterswa/talvi/backend/internal/dragonfly"
-	"github.com/michaelpeterswa/talvi/backend/internal/encryption"
-	"github.com/michaelpeterswa/talvi/backend/internal/util"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -35,7 +35,7 @@ var getAccountSQL string
 
 type AccountsClient struct {
 	kv *dragonfly.DragonflyClient
-	db *cockroach.CockroachClient
+	db *postgres.PostgresClient
 
 	aesClient *encryption.AESClient
 }
@@ -58,7 +58,7 @@ func (a *Account) ToJSON() (string, error) {
 	return string(b), nil
 }
 
-func NewAccountsClient(kv *dragonfly.DragonflyClient, db *cockroach.CockroachClient, aesClient *encryption.AESClient) *AccountsClient {
+func NewAccountsClient(kv *dragonfly.DragonflyClient, db *postgres.PostgresClient, aesClient *encryption.AESClient) *AccountsClient {
 	return &AccountsClient{
 		kv:        kv,
 		db:        db,

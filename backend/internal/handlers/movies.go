@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/michaelpeterswa/talvi/backend/internal/movies"
+	"github.com/alpineworks/katalog/backend/internal/movies"
 )
 
 type MovieHandler struct {

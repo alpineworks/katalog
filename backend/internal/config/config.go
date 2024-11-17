@@ -15,7 +15,7 @@ const (
 	DragonflyPort = "dragonfly.port"
 	DragonflyAuth = "dragonfly.auth"
 
-	CockroachURL = "cockroach.url"
+	PostgresURL = "postgres.url"
 
 	MetricsEnabled = "metrics.enabled"
 	MetricsPort    = "metrics.port"

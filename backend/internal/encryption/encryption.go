@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	tracer = otel.Tracer("github.com/michaelpeterswa/talvi/backend/internal/encryption")
+	tracer = otel.Tracer("github.com/alpineworks/katalog/backend/internal/encryption")
 )
 
 type AESConfig struct {

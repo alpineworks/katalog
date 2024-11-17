@@ -6,14 +6,14 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/michaelpeterswa/talvi/backend/internal/cockroach"
-	"github.com/michaelpeterswa/talvi/backend/internal/dragonfly"
+	"github.com/alpineworks/katalog/backend/internal/dragonfly"
+	"github.com/alpineworks/katalog/backend/internal/postgres"
 	"github.com/redis/go-redis/v9"
 )
 
 type MoviesClient struct {
 	kv *dragonfly.DragonflyClient
-	db *cockroach.CockroachClient
+	db *postgres.PostgresClient
 }
 
 type Movie struct {
@@ -21,7 +21,7 @@ type Movie struct {
 	Year int    `json:"year"`
 }
 
-func NewMoviesClient(kv *dragonfly.DragonflyClient, db *cockroach.CockroachClient) *MoviesClient {
+func NewMoviesClient(kv *dragonfly.DragonflyClient, db *postgres.PostgresClient) *MoviesClient {
 	return &MoviesClient{
 		kv: kv,
 		db: db,
@@ -40,7 +40,7 @@ func (mc *MoviesClient) GetMovies(ctx context.Context) ([]Movie, error) {
 		}
 		return movies, nil
 	}
-	rows, err := mc.db.Client.Query(ctx, "SELECT * FROM talvi.movies LIMIT 10;")
+	rows, err := mc.db.Client.Query(ctx, "SELECT * FROM katalog.movies LIMIT 10;")
 	if err != nil {
 		return nil, fmt.Errorf("failed to query movies: %w", err)
 	}

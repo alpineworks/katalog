@@ -5,17 +5,17 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/alpineworks/katalog/backend/internal/accounts"
+	"github.com/alpineworks/katalog/backend/internal/config"
+	"github.com/alpineworks/katalog/backend/internal/dragonfly"
+	"github.com/alpineworks/katalog/backend/internal/encryption"
+	"github.com/alpineworks/katalog/backend/internal/handlers"
+	"github.com/alpineworks/katalog/backend/internal/logging"
+	"github.com/alpineworks/katalog/backend/internal/middleware"
+	"github.com/alpineworks/katalog/backend/internal/movies"
+	"github.com/alpineworks/katalog/backend/internal/postgres"
 	"github.com/alpineworks/ootel"
 	"github.com/gorilla/mux"
-	"github.com/michaelpeterswa/talvi/backend/internal/accounts"
-	"github.com/michaelpeterswa/talvi/backend/internal/cockroach"
-	"github.com/michaelpeterswa/talvi/backend/internal/config"
-	"github.com/michaelpeterswa/talvi/backend/internal/dragonfly"
-	"github.com/michaelpeterswa/talvi/backend/internal/encryption"
-	"github.com/michaelpeterswa/talvi/backend/internal/handlers"
-	"github.com/michaelpeterswa/talvi/backend/internal/logging"
-	"github.com/michaelpeterswa/talvi/backend/internal/middleware"
-	"github.com/michaelpeterswa/talvi/backend/internal/movies"
 	"github.com/redis/go-redis/extra/redisotel/v9"
 	"github.com/rs/cors"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux"
@@ -26,7 +26,7 @@ import (
 func main() {
 	ctx := context.Background()
 
-	k, err := config.Get("talvi")
+	k, err := config.Get("katalog")
 	if err != nil {
 		log.Fatalf("error getting config: %v", err)
 	}
@@ -36,7 +36,7 @@ func main() {
 		log.Fatalf("error initializing logging: %v", err)
 	}
 
-	logger.Info("welcome to talvi backend!")
+	logger.Info("welcome to katalog backend!")
 
 	ootelClient := ootel.NewOotelClient(
 		ootel.WithMetricConfig(ootel.NewMetricConfig(
@@ -84,11 +84,11 @@ func main() {
 		logger.Fatal("failed to instrument redis tracing", zap.Error(err))
 	}
 
-	cockroachClient, err := cockroach.NewCockroachClient(k.String(config.CockroachURL))
+	postgresClient, err := postgres.NewPostgresClient(k.String(config.PostgresURL))
 	if err != nil {
-		logger.Fatal("error initializing cockroach client", zap.Error(err))
+		logger.Fatal("error initializing postgres client", zap.Error(err))
 	}
-	defer cockroachClient.Client.Close()
+	defer postgresClient.Client.Close()
 
 	jwtMiddlewareClient, err := middleware.NewJWTMiddleware(logger, k.String(config.JWESecret))
 	if err != nil {
@@ -97,10 +97,10 @@ func main() {
 
 	accountAuthorizationMiddleware := middleware.NewAccountAuthorizationMiddleware(logger)
 
-	accountsClient := accounts.NewAccountsClient(dragonflyClient, cockroachClient, aesClient)
+	accountsClient := accounts.NewAccountsClient(dragonflyClient, postgresClient, aesClient)
 	accountsHandler := handlers.NewAccountsHandler(logger, accountsClient)
 
-	moviesClient := movies.NewMoviesClient(dragonflyClient, cockroachClient)
+	moviesClient := movies.NewMoviesClient(dragonflyClient, postgresClient)
 	moviesHandler := handlers.NewMovieHandler(moviesClient)
 
 	router := mux.NewRouter()

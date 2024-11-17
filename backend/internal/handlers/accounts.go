@@ -6,8 +6,8 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/alpineworks/katalog/backend/internal/accounts"
 	"github.com/jackc/pgx/v5"
-	"github.com/michaelpeterswa/talvi/backend/internal/accounts"
 	"go.uber.org/zap"
 )
 

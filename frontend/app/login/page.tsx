@@ -17,7 +17,7 @@ export default async function SignInPage() {
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)]">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle>talvi</CardTitle>
+          <CardTitle>katalog</CardTitle>
           <CardDescription>login</CardDescription>
         </CardHeader>
         <CardFooter>

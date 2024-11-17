@@ -1,5 +1,5 @@
 INSERT INTO
-    talvi.accounts (
+    katalog.accounts (
         id,
         name,
         role,

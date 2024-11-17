@@ -48,7 +48,7 @@ export default function Navigation() {
         <SheetContent side="left">
           <Link href="/" className="flex items-center gap-2" prefetch={false}>
             <Home />
-            <span className="text-lg font-semibold">talvi</span>
+            <span className="text-lg font-semibold">katalog</span>
           </Link>
           <div className="grid gap-4 py-6">
             {sheetLinks.map((link, index) => (
@@ -67,7 +67,7 @@ export default function Navigation() {
       <div className="w-[150px] hidden lg:flex">
         <Link href="/" className="flex items-center gap-2" prefetch={false}>
           <Home />
-          <span className="text-lg font-semibold">talvi</span>
+          <span className="text-lg font-semibold">katalog</span>
         </Link>
       </div>
       <div className="flex w-full justify-center">

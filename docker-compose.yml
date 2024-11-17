@@ -6,33 +6,33 @@ services:
     build:
       context: backend
       dockerfile: Dockerfile
-    # image: ghcr.io/michaelpeterswa/talvi-backend
+    # image: ghcr.io/alpineworks/katalog-backend
     ports:
       - "8080:8080"
       - "8081:8081"
     volumes:
-      - ./output:/etc/talvi/output
+      - ./output:/etc/katalog/output
     environment:
-      TALVI_LOG_LEVEL: "debug"
-      TALVI_DRAGONFLY_HOST: "dragonfly"
-      TALVI_DRAGONFLY_PORT: "6379"
-      TALVI_DRAGONFLY_AUTH: ""
+      KATALOG_LOG_LEVEL: "debug"
+      KATALOG_DRAGONFLY_HOST: "dragonfly"
+      KATALOG_DRAGONFLY_PORT: "6379"
+      KATALOG_DRAGONFLY_AUTH: ""
       # yamllint disable-line rule:line-length
-      TALVI_COCKROACH_URL: "postgresql://talvi@cockroach:26257/talvi?sslmode=disable"
+      KATALOG_POSTGRES_URL: "postgres://katalog:password@postgres:5432/katalog?sslmode=disable"
 
       # openssl rand -base64 32
-      TALVI_JWE_SECRET: "jFAoVugDcUAjrXNKvZo0v1k8fqOfQA0NkRvLBnJtP8Y="
+      KATALOG_JWE_SECRET: "c+lnWb9DPKlBdBlpyc8+jx18Hs2tnNVLra7nNFYFq28="
 
       # openssl enc -aes-128-cbc -k secret -P -pbkdf2
-      TALVI_AES_KEY: "0936B5920B3E6FDDFEE77AE131C14385"
+      KATALOG_AES_KEY: "3B553FF2650F88A9674AC505D42AC191"
 
-      TALVI_METRICS_ENABLED: "true"
-      TALVI_METRICS_PORT: "8081"
+      KATALOG_METRICS_ENABLED: "true"
+      KATALOG_METRICS_PORT: "8081"
 
-      TALVI_TRACING_ENABLED: "true"
-      TALVI_TRACING_RATIO: "1.0"
-      TALVI_SERVICE_NAME: "talvi-backend"
-      TALVI_SERVICE_VERSION: "0.0.1"
+      KATALOG_TRACING_ENABLED: "true"
+      KATALOG_TRACING_RATIO: "1.0"
+      KATALOG_SERVICE_NAME: "katalog-backend"
+      KATALOG_SERVICE_VERSION: "0.0.1"
 
       OTEL_EXPORTER_OTLP_ENDPOINT: "http://tempo:4317"
 
@@ -42,17 +42,17 @@ services:
     depends_on:
       dragonfly:
         condition: service_started
-      seedcockroachdb:
+      seedpostgresdb:
         condition: service_completed_successfully
   frontend:
     build:
       context: frontend
       dockerfile: Dockerfile
-    # image: ghcr.io/michaelpeterswa/talvi-frontend
+    # image: ghcr.io/alpineworks/katalog-frontend
     ports:
       - "3000:3000"
     env_file:
-      - frontend/.env.local
+      - frontend/.env.docker.local
     depends_on:
       backend:
         condition: service_started
@@ -62,31 +62,29 @@ services:
       memlock: -1
     ports:
       - "6379:6379"
-  cockroach:
-    image: cockroachdb/cockroach
+  postgres:
+    image: postgres
     environment:
-      COCKROACH_DATABASE: "talvi"
-      COCKROACH_USER: "talvi"
-      # COCKROACH_PASSWORD: "password" # password not supported in insecure mode
-    command: start-single-node --insecure
+      POSTGRES_DATABASE: "katalog"
+      POSTGRES_USER: "katalog"
+      POSTGRES_PASSWORD: "password"
     restart: "no"
     ports:
-      - "26257:26257"
-      - "8083:8080"
+      - "5432:5432"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health?ready=1"]
-      interval: 3s
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U katalog -d katalog'"]
+      interval: 10s
       timeout: 3s
-      retries: 5
-  seedcockroachdb:
+      retries: 3
+  seedpostgresdb:
     image: migrate/migrate
     volumes:
-      - ./docker/cockroach/migrations:/migrations
+      - ./docker/postgres/migrations:/migrations
     entrypoint: >
       /bin/sh -c 'sleep 5 && migrate -path=/migrations/ -database
-      "cockroachdb://talvi@cockroach:26257/talvi?sslmode=disable" up'
+      "postgres://katalog:password@postgres:5432/katalog?sslmode=disable" up'
     depends_on:
-      cockroach:
+      postgres:
         condition: service_healthy
 
   prometheus:
