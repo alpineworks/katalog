@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	meter = otel.Meter("github.com/michaelpeterswa/talvi/backend/internal/middleware")
+	meter = otel.Meter("github.com/alpineworks/katalog/backend/internal/middleware")
 
 	requestsCounter otelmetric.Int64Counter
 )

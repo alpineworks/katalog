@@ -1,4 +1,4 @@
-package cockroach
+package postgres
 
 import (
 	"context"
@@ -13,17 +13,17 @@ var (
 	ErrPgxFailedToConnect     = errors.New("pgx failed to connect")
 )
 
-type CockroachClient struct {
+type PostgresClient struct {
 	Client *pgxpool.Pool
 }
 
-func NewCockroachClient(connectionString string) (*CockroachClient, error) {
+func NewPostgresClient(connectionString string) (*PostgresClient, error) {
 	config, err := pgxpool.ParseConfig(connectionString)
 	if err != nil {
 		return nil, ErrPgxFailedToParseConfig
 	}
 
-	config.ConnConfig.RuntimeParams["application_name"] = "$ talvi_backend"
+	config.ConnConfig.RuntimeParams["application_name"] = "$ katalog_backend"
 	config.ConnConfig.Tracer = otelpgx.NewTracer()
 
 	conn, err := pgxpool.NewWithConfig(context.Background(), config)
@@ -31,5 +31,5 @@ func NewCockroachClient(connectionString string) (*CockroachClient, error) {
 		return nil, err
 	}
 
-	return &CockroachClient{Client: conn}, nil
+	return &PostgresClient{Client: conn}, nil
 }

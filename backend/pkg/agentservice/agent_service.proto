@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+option go_package = "github.com/alpineworks/katalog/backend/pkg/agentservice";
+
+package agentservice;
+
+service AgentService {
+    rpc PublishDeployments(PublishDeploymentsRequest) returns (PublishDeploymentsResponse) {}
+}
+
+// request object
+message PublishDeploymentsRequest {
+    repeated Deployment deployments = 1;
+}
+
+// simple abstraction of a kubernetes deployment
+message Deployment {
+    string name = 1;
+    int32 replicas = 2;
+    int32 true_replicas = 3;
+    map<string, string> labels = 4;
+    repeated Containers containers = 5;
+}
+
+// simple abstraction of a kubernetes container
+message Containers {
+    string name = 1;
+    string image = 2;
+    string tag = 3;
+}
+
+message PublishDeploymentsResponse {
+    bool success = 1;
+    optional string error = 2;
+}

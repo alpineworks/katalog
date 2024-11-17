@@ -13,11 +13,11 @@ import (
 	"github.com/pquerna/otp/totp"
 	"go.opentelemetry.io/otel"
 
-	"github.com/michaelpeterswa/talvi/backend/internal/util"
+	"github.com/alpineworks/katalog/backend/internal/util"
 )
 
 var (
-	tracer = otel.Tracer("github.com/michaelpeterswa/talvi/backend/internal/accounts")
+	tracer = otel.Tracer("github.com/alpineworks/katalog/backend/internal/accounts")
 )
 
 //go:embed queries/twofactor/create_twofactor.pgsql
@@ -50,7 +50,7 @@ func (ac *AccountsClient) Generate2FA(ctx context.Context, email string, provide
 	defer span.End()
 
 	opts := totp.GenerateOpts{
-		Issuer:      "talvi",
+		Issuer:      "katalog",
 		AccountName: email,
 	}
 

@@ -8,8 +8,8 @@ import { ThemeProvider } from "@/components/theme/theme-provider";
 import Navigation from "@/components/navigation/navigation";
 import { Toaster } from "@/components/ui/toaster";
 export const metadata: Metadata = {
-  title: "talvi",
-  description: "frontend for the talvi stack",
+  title: "katalog",
+  description: "frontend for the katalog stack",
 };
 
 export default async function RootLayout({

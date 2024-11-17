@@ -1,3 +1,4 @@
 output/
 .secrets.yaml
 .DS_Store
+certs/

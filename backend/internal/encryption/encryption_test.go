@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 	"testing"
 
-	"github.com/michaelpeterswa/talvi/backend/internal/encryption"
+	"github.com/alpineworks/katalog/backend/internal/encryption"
 	"github.com/stretchr/testify/assert"
 )
 
