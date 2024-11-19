@@ -22,7 +22,7 @@ func init() {
 
 	requestsCounter, err = meter.Int64Counter(
 		"requests",
-		otelmetric.WithDescription("number of requests to the movies service"),
+		otelmetric.WithDescription("number of requests to the service"),
 	)
 
 	if err != nil {

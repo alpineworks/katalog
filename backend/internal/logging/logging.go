@@ -13,9 +13,6 @@ func InitLogging(levelStr string) (*zap.Logger, error) {
 	}
 
 	loggerConfig := zap.NewProductionConfig()
-	if err != nil {
-		return nil, err
-	}
 
 	loggerConfig.Level.SetLevel(level)
 

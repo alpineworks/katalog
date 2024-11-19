@@ -10,6 +10,7 @@ services:
     ports:
       - "8080:8080"
       - "8081:8081"
+      - "50051:50051"
     volumes:
       - ./output:/etc/katalog/output
     environment:
@@ -44,18 +45,18 @@ services:
         condition: service_started
       seedpostgresdb:
         condition: service_completed_successfully
-  frontend:
-    build:
-      context: frontend
-      dockerfile: Dockerfile
-    # image: ghcr.io/alpineworks/katalog-frontend
-    ports:
-      - "3000:3000"
-    env_file:
-      - frontend/.env.docker.local
-    depends_on:
-      backend:
-        condition: service_started
+  # frontend:
+  #   build:
+  #     context: frontend
+  #     dockerfile: Dockerfile
+  #   # image: ghcr.io/alpineworks/katalog-frontend
+  #   ports:
+  #     - "3000:3000"
+  #   env_file:
+  #     - frontend/.env.docker.local
+  #   depends_on:
+  #     backend:
+  #       condition: service_started
   dragonfly:
     image: docker.dragonflydb.io/dragonflydb/dragonfly
     ulimits:

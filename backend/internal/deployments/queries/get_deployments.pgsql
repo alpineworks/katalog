@@ -1,0 +1,12 @@
+SELECT
+    id,
+    name,
+    namespace,
+    cluster,
+    replicas,
+    true_replicas,
+    created_at,
+    updated_at,
+    labels
+FROM
+    katalog.deployments;

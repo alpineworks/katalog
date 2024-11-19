@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/input-otp";
 import { useSearchParams } from "next/navigation";
 import { setTwoFactorVerifiedCookie } from "./cookie";
-import { SignInWithProvider } from "@/lib/auth/action";
+import { SignInWithProviderDefaultCallback } from "@/lib/auth/action";
 import { toast, useToast } from "@/components/ui/use-toast";
 
 const FormSchema = z.object({
@@ -111,7 +111,7 @@ function getCodeVerification(
         console.log(body);
         if (body.verified) {
           setTwoFactorVerifiedCookie();
-          SignInWithProvider(provider, "/");
+          SignInWithProviderDefaultCallback(provider);
         } else if (body.verified === false) {
           console.log("Code verification failed");
           toast({
