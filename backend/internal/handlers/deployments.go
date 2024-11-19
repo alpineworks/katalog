@@ -25,6 +25,9 @@ type GetDeploymentsResponse struct {
 }
 
 func (dh *DeploymentsHandler) GetDeployments(w http.ResponseWriter, r *http.Request) {
+	_, span := tracer.Start(r.Context(), "GetDeployments")
+	defer span.End()
+
 	deployments, err := dh.deploymentsClient.GetDeployments(r.Context())
 	if err != nil {
 		dh.logger.Error("error getting deployments", zap.Error(err))
