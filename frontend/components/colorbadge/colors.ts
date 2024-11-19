@@ -27,7 +27,6 @@ export function getColorFromString(str: string): string {
         "#ffd6b8",
     ];
 
-    console.log("getColorFromString: " + str + " -> " + colors[hashString(str, colors.length)]);
     return colors[hashString(str, colors.length)];
 }
 
