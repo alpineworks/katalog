@@ -16,14 +16,16 @@ message PublishDeploymentsRequest {
 // simple abstraction of a kubernetes deployment
 message Deployment {
     string name = 1;
-    int32 replicas = 2;
-    int32 true_replicas = 3;
-    map<string, string> labels = 4;
-    repeated Containers containers = 5;
+    string namespace = 2;
+    string cluster = 3;
+    int32 replicas = 4;
+    int32 true_replicas = 5;
+    map<string, string> labels = 6;
+    repeated Container containers = 7;
 }
 
 // simple abstraction of a kubernetes container
-message Containers {
+message Container {
     string name = 1;
     string image = 2;
     string tag = 3;

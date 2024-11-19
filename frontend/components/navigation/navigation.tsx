@@ -7,7 +7,7 @@ import {
   NavigationMenuList,
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
-import { Home, Menu } from "lucide-react";
+import { Home, Menu, Server } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { ModeToggle } from "../theme/mode-toggle";
 import { useEffect, useState } from "react";
@@ -24,16 +24,11 @@ export default function Navigation() {
   }, [session]);
 
   let sheetLinks: NavigationLink[] = [
-    { id: 1, title: "Example Link 1", href: "#" },
-    { id: 2, title: "Example Link 2", href: "#" },
-    { id: 3, title: "Example Link 3", href: "#" },
-    { id: 4, title: "Example Link 4", href: "#" },
+    { id: 1, title: "Deployments", href: "/deployments" },
   ];
 
   let barLinks: NavigationLink[] = [
-    { id: 1, title: "Example Link 1", href: "#" },
-    { id: 2, title: "Example Link 2", href: "#" },
-    { id: 3, title: "Example Link 3", href: "#" },
+    { id: 1, title: "Deployments", href: "/deployments" },
   ];
 
   return (
@@ -66,7 +61,7 @@ export default function Navigation() {
       </Sheet>
       <div className="w-[150px] hidden lg:flex">
         <Link href="/" className="flex items-center gap-2" prefetch={false}>
-          <Home />
+          <Server />
           <span className="text-lg font-semibold">katalog</span>
         </Link>
       </div>

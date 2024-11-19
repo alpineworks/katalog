@@ -1,8 +1,7 @@
-"use client";
-import { pacifico } from "./fonts";
 import { cn } from "@/lib/utils";
+import { pacifico } from "../fonts";
 
-export default function Home() {
+export default function Unauthorized() {
   return (
     <main>
       <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)]">
@@ -14,8 +13,9 @@ export default function Home() {
                 pacifico.className
               )}
             >
-              katalog!
+              unauthorized!
             </h1>
+            <h1>sign in to access restricted content.</h1>
           </div>
         </div>
       </div>

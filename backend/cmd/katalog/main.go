@@ -3,17 +3,20 @@ package main
 import (
 	"context"
 	"log"
+	"net"
 	"net/http"
 
 	"github.com/alpineworks/katalog/backend/internal/accounts"
 	"github.com/alpineworks/katalog/backend/internal/config"
+	"github.com/alpineworks/katalog/backend/internal/deployments"
 	"github.com/alpineworks/katalog/backend/internal/dragonfly"
 	"github.com/alpineworks/katalog/backend/internal/encryption"
+	"github.com/alpineworks/katalog/backend/internal/grpcserver"
 	"github.com/alpineworks/katalog/backend/internal/handlers"
 	"github.com/alpineworks/katalog/backend/internal/logging"
 	"github.com/alpineworks/katalog/backend/internal/middleware"
-	"github.com/alpineworks/katalog/backend/internal/movies"
 	"github.com/alpineworks/katalog/backend/internal/postgres"
+	"github.com/alpineworks/katalog/backend/pkg/agentservice"
 	"github.com/alpineworks/ootel"
 	"github.com/gorilla/mux"
 	"github.com/redis/go-redis/extra/redisotel/v9"
@@ -21,6 +24,8 @@ import (
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux"
 	"go.opentelemetry.io/otel"
 	"go.uber.org/zap"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 func main() {
@@ -100,8 +105,24 @@ func main() {
 	accountsClient := accounts.NewAccountsClient(dragonflyClient, postgresClient, aesClient)
 	accountsHandler := handlers.NewAccountsHandler(logger, accountsClient)
 
-	moviesClient := movies.NewMoviesClient(dragonflyClient, postgresClient)
-	moviesHandler := handlers.NewMovieHandler(moviesClient)
+	deploymentsClient := deployments.NewDeploymentsClient(postgresClient, dragonflyClient)
+	deploymentsHandler := handlers.NewDeploymentsClient(logger, deploymentsClient)
+
+	grpcServer := grpc.NewServer(grpc.Creds(insecure.NewCredentials()))
+	agentservice.RegisterAgentServiceServer(grpcServer, grpcserver.NewAgentServiceServer(deploymentsClient))
+
+	listener, err := net.Listen("tcp", ":50051")
+	if err != nil {
+		logger.Fatal("failed to listen", zap.Error(err))
+	}
+
+	go func() {
+		logger.Info("starting grpc server...")
+		err = grpcServer.Serve(listener)
+		if err != nil {
+			logger.Error("failed to serve", zap.Error(err))
+		}
+	}()
 
 	router := mux.NewRouter()
 	apiRouter := router.PathPrefix("/api").Subrouter()
@@ -119,7 +140,7 @@ func main() {
 	twofactorRouter.HandleFunc("/generate", accountsHandler.Generate2FA).Methods("GET")
 	twofactorRouter.HandleFunc("/validate", accountsHandler.Validate2FA).Methods("GET")
 
-	v1Router.HandleFunc("/movies", moviesHandler.GetMovies)
+	v1Router.HandleFunc("/deployments", deploymentsHandler.GetDeployments).Methods("GET")
 
 	router.Use(
 		// requests tracer middleware

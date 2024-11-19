@@ -7,6 +7,7 @@ import AuthProvider from "@/lib/auth/authprovider";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import Navigation from "@/components/navigation/navigation";
 import { Toaster } from "@/components/ui/toaster";
+import Footer from "@/components/footer/footer";
 export const metadata: Metadata = {
   title: "katalog",
   description: "frontend for the katalog stack",
@@ -34,6 +35,10 @@ export default async function RootLayout({
           <AuthProvider session={session}>
             <Navigation />
             {children}
+            <div className="container mx-auto">
+              <Footer />
+            </div>
+
             <Toaster />
           </AuthProvider>
         </ThemeProvider>

@@ -54,7 +54,7 @@ export default async function Settings() {
               <div className="grid w-full items-center gap-4">
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="name">Created At:</Label>
-                  <text>{}</text>
+                  <text>{account.created_at}</text>
                 </div>
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="framework">Role</Label>

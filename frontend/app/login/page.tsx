@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Github } from "lucide-react";
-import { SignInWithProvider } from "@/lib/auth/action";
+import { SignInWithProviderDefaultCallback } from "@/lib/auth/action";
 
 export default async function SignInPage() {
   return (
@@ -27,7 +27,7 @@ export default async function SignInPage() {
                 action={async () => {
                   "use server";
                   try {
-                    await SignInWithProvider(provider.id, "/");
+                    await SignInWithProviderDefaultCallback(provider.id);
                   } catch (error) {
                     // Signin can fail for a number of reasons, such as the user
                     // not existing, or the user not having the correct role.
