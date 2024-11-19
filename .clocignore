@@ -1,0 +1,5 @@
+frontend/node_modules/
+frontend/.next/
+output/
+backend/vendor/
+frontend/components/ui/
