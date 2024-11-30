@@ -77,6 +77,18 @@ services:
       interval: 10s
       timeout: 3s
       retries: 3
+  preseedpostgresdb:
+    image: ghcr.io/alpineworks/katalog-migrations:v1.0.2
+    environment:
+      DATABASE_DRIVER: "postgres"
+      DATABASE_USER: "katalog"
+      DATABASE_PASSWORD: "password"
+      DATABASE_HOST: "postgres"
+      DATABASE_PORT: "5432"
+      DATABASE_NAME: "katalog"
+    depends_on:
+      postgres:
+        condition: service_healthy
   seedpostgresdb:
     image: migrate/migrate
     volumes:
@@ -85,8 +97,8 @@ services:
       /bin/sh -c 'sleep 5 && migrate -path=/migrations/ -database
       "postgres://katalog:password@postgres:5432/katalog?sslmode=disable" up'
     depends_on:
-      postgres:
-        condition: service_healthy
+      preseedpostgresdb:
+        condition: service_completed_successfully
 
   prometheus:
     image: prom/prometheus
