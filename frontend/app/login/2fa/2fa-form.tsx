@@ -108,7 +108,6 @@ function getCodeVerification(
   response.then((res) => {
     if (res.status === 200) {
       res.json().then((body) => {
-        console.log(body);
         if (body.verified) {
           setTwoFactorVerifiedCookie();
           SignInWithProviderDefaultCallback(provider);
