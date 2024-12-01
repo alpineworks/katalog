@@ -2,6 +2,8 @@ github.com/OneOfOne/xxhash v1.2.2 h1:KMrpdQIwFcEqXDklaen+P1axHaj9BSKzvpUUfnHldSE
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/alpineworks/ootel v1.0.0 h1:ti3B4exVkRqrJn2+gxXK1TRDVZrIcCdtfJtgZpt68Hg=
 github.com/alpineworks/ootel v1.0.0/go.mod h1:GweJ41cRRJD52jq+flei4kq13K+XtgTSnpvznqqW6Hs=
+github.com/alpineworks/ootel v1.0.1 h1:lHuPRUtqqGLChgTWh1rCLTmwJKMhrrtWsHx97bbYeGg=
+github.com/alpineworks/ootel v1.0.1/go.mod h1:qQuKequ2YBLUKSuKiR9jv/8nOtz+gsUKztVr0iFjUWg=
 github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
 github.com/boombuler/barcode v1.0.1-0.20190219062509-6c824513bacc h1:biVzkmvwrH8WK8raXaxBx6fRVTlJILwEwQGL1I/ByEI=

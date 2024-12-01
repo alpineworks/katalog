@@ -3,7 +3,7 @@ module github.com/alpineworks/katalog/backend
 go 1.23.0
 
 require (
-	github.com/alpineworks/ootel v1.0.0
+	github.com/alpineworks/ootel v1.0.1
 	github.com/cespare/xxhash v1.1.0
 	github.com/exaring/otelpgx v0.5.4
 	github.com/go-jose/go-jose/v3 v3.0.3
