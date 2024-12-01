@@ -51,6 +51,10 @@ export const authOptions: NextAuthConfig = {
                 return "/login/2fa?" + new URLSearchParams({ email: profile.email, provider: account.provider }).toString();
               }
             }
+          } else {
+            console.log("Error: ", response.status);
+            console.log(response.text());
+            return false;
           }
 
           return true;
@@ -100,6 +104,8 @@ async function getAccountOrCreate(token: JWT) {
     if (res.status === 404) {
       await createAccount(token, jwe)
     } else if (res.status != 200){
+      console.log("Error: ", res.status)
+      console.log(res.text())
       return false
     } else {
       return true
@@ -125,6 +131,8 @@ async function createAccount(token: JWT , jwe: string) {
   if (res.status === 201) {
     return true
   } else {
+    console.log("Error: ", res.status)
+    console.log(res.text())
     return false
   }
 }
