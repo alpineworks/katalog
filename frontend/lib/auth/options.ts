@@ -23,6 +23,7 @@ export const providers: Provider[] = [
 ];
 
 export const authOptions: NextAuthConfig = {
+    debug: process.env.AUTHJS_DEBUG === "true",
     providers: providers,
     pages: {
         signIn: "/login",
