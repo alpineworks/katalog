@@ -17,7 +17,7 @@ export type Deployment = {
   true_replicas: number;
   created_at: string;
   updated_at: string;
-  labels: { [key: string]: string };
+  labels: { [key: string]: string } | null;
 };
 
 export type Deployments = {
@@ -77,7 +77,7 @@ export const columns: ColumnDef<Deployment>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex flex-wrap gap-2">
-          {Object.entries(row.original.labels).map(([key, value]) => {
+          {Object.entries(row.original.labels ?? {}).map(([key, value]) => {
             const plaintext = `${key}:${value}`;
             return <ColorBadge text={plaintext} key={plaintext} />;
           })}
