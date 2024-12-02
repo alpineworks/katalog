@@ -285,4 +285,15 @@ VALUES
         '2024-10-21T13:24:31Z',
         '2024-11-12T13:24:31Z',
         '{"country":"usa","favorite_letter":"x","nextjs":"of course","powered_by":"go"}'
+    ),
+    (
+        '22045847-1b6e-464c-967c-8ef013ae3c80',
+        'local-path-provisioner',
+        '',
+        '',
+        1,
+        1,
+        '2024-12-02T06:12:00Z',
+        '2024-12-02T06:12:00Z',
+        null
     );
