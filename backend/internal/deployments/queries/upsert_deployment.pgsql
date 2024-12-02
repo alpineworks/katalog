@@ -19,5 +19,5 @@ SET
     cluster = EXCLUDED.cluster,
     replicas = EXCLUDED.replicas,
     true_replicas = EXCLUDED.true_replicas,
-    labels = EXCLUDED.labels;
+    labels = EXCLUDED.labels,
     updated_at = EXCLUDED.updated_at;
