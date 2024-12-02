@@ -123,7 +123,7 @@ func (dc *DeploymentsClient) UpsertDeployment(ctx context.Context, deployment De
 		id = uuid.NewV4().String()
 	}
 
-	_, err = dc.postgresClient.Client.Exec(ctx, upsertDeploymentSQL, id, deployment.Name, deployment.Namespace, deployment.Cluster, deployment.Replicas, deployment.TrueReplicas, deployment.Labels)
+	_, err = dc.postgresClient.Client.Exec(ctx, upsertDeploymentSQL, id, deployment.Name, deployment.Namespace, deployment.Cluster, deployment.Replicas, deployment.TrueReplicas, deployment.Labels, time.Now())
 	if err != nil {
 		return fmt.Errorf("failed to upsert deployment: %w", err)
 	}
