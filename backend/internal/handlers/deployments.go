@@ -4,16 +4,16 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/alpineworks/katalog/backend/internal/deployments"
+	d "github.com/alpineworks/katalog/backend/internal/deployments"
 	"go.uber.org/zap"
 )
 
 type DeploymentsHandler struct {
-	deploymentsClient *deployments.DeploymentsClient
+	deploymentsClient *d.DeploymentsClient
 	logger            *zap.Logger
 }
 
-func NewDeploymentsClient(logger *zap.Logger, deploymentsClient *deployments.DeploymentsClient) *DeploymentsHandler {
+func NewDeploymentsClient(logger *zap.Logger, deploymentsClient *d.DeploymentsClient) *DeploymentsHandler {
 	return &DeploymentsHandler{
 		logger:            logger,
 		deploymentsClient: deploymentsClient,
@@ -21,7 +21,7 @@ func NewDeploymentsClient(logger *zap.Logger, deploymentsClient *deployments.Dep
 }
 
 type GetDeploymentsResponse struct {
-	Deployments []deployments.Deployment `json:"deployments"`
+	Deployments []d.Deployment `json:"deployments"`
 }
 
 func (dh *DeploymentsHandler) GetDeployments(w http.ResponseWriter, r *http.Request) {
@@ -36,7 +36,15 @@ func (dh *DeploymentsHandler) GetDeployments(w http.ResponseWriter, r *http.Requ
 	}
 
 	if deployments == nil {
-		w.WriteHeader(http.StatusNotFound)
+		deploymentsJSON, err := json.Marshal(GetDeploymentsResponse{Deployments: []d.Deployment{}})
+		if err != nil {
+			dh.logger.Error("error marshalling deployments", zap.Error(err))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(deploymentsJSON))
 		return
 	}
 
