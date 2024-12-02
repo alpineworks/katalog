@@ -60,6 +60,8 @@ func (jwtmc *JWTMiddlewareClient) JWTMiddleware(next http.Handler) http.Handler 
 		}
 		jwe := bearerTokenRegex.FindStringSubmatch(authHeader)[1]
 
+		jwtmc.logger.Debug("jwe", zap.String("jwe", jwe))
+
 		object, err := jose.ParseEncrypted(jwe)
 		if err != nil {
 			jwtmc.logger.Info("error parsing encrypted jwt", zap.Error(err))
